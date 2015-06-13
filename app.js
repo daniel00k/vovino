@@ -10,7 +10,6 @@ var routes       = require('./routes/index');
 var redis        = require("redis").createClient();
 var io           = require("socket.io").listen(process.env.PORT || 3001);
 
-var helpers      = require('./utils/helpers').tokenHelpers;
 var app          = express();
 
 // view engine setup
@@ -26,8 +25,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-console.log(helpers.generatePartyId());
-redis.subscribe("alert_created");
+
+// redis.subscribe("alert_created");
 
 io.on("connection", function(socket){
  console.log("connected socket")
@@ -37,11 +36,11 @@ io.on("connection", function(socket){
  });
 });
 
-redis.on("message", function(channel, message){
-    console.log(message);
-    io.sockets.emit(channel, JSON.parse(message));
-    console.log("channel "+ channel);
-});
+// redis.on("message", function(channel, message){
+//     console.log(message);
+//     io.sockets.emit(channel, JSON.parse(message));
+//     console.log("channel "+ channel);
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
