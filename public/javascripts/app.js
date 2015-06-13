@@ -21,6 +21,16 @@ App.ApplicationRoute = Ember.Route.extend({
   }
 });
 
+App.JoinRoute = Ember.Route.extend({
+  model: function () {
+    return App.Playlist.create();
+  },
+
+  setupController: function (controller, model) {
+    controller.set('model', model);
+  }
+});
+
 // Models
 App.Playlist = Ember.Object.extend({
   id: ''
@@ -29,7 +39,8 @@ App.Playlist = Ember.Object.extend({
 // Controllers
 App.JoinController = Ember.Controller.extend({
   submitAction: function () {
-    console.log('ha :D');
-    debugger
+    var playlistID = this.get('model').get('id');
+
+    socket.emit('connect', playlistID);
   }
 });
