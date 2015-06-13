@@ -3,9 +3,15 @@ html
   head
     title= title
     link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
+
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/interface.css')
+
+  body
+    block content
+
+    script(src='/jquery/dist/jquery.min.js')
     script(src='https://cdn.socket.io/socket.io-1.2.0.js')
-    script(src='http://code.jquery.com/jquery-1.11.1.js')
     script.
       var socket = io("localhost:3001");
       $('form').submit(function(){
@@ -14,9 +20,5 @@ html
       return false;
       });
       socket.on('song_added', function(msg){
-      	console.log(msg);
+        console.log(msg);
       });
-  body
-    block content
-
-    script(src='/jquery/dist/jquery.min.js')
