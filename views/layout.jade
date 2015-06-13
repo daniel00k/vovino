@@ -10,11 +10,14 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/interface.css')
 
-  body
     block content
-
+  body
     script(src='/jquery/dist/jquery.min.js')
     script(src='https://cdn.socket.io/socket.io-1.2.0.js')
+    script(src='/ember/ember.min.js')
+    script(src='/ember/ember-template-compiler.js')
+    script(src='/javascripts/app.js')
+
     script.
       var socket = io("localhost:3001");
       $('form').submit(function(){

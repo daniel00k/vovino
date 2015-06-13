@@ -2,6 +2,7 @@ $background: #252525
 $main-color: #00e676
 $secondary-color: lime
 $font-color: #fff
+$font-color-inverse: #252525
 
 body, html
   background: #252525
@@ -15,6 +16,21 @@ footer
     font-size: .75em
     line-height: 10px
     text-align: center
+
+form
+  input
+    display: block
+
+  input[type='text']
+    width: 100%
+    border-radius: 0
+    border: 0
+    padding: 10px 20px
+    text-transform: uppercase
+    text-align: center
+    margin-bottom: 10px
+    background: $font-color
+    color: $font-color-inverse
 
 .btn
   border-radius: 0
@@ -33,13 +49,13 @@ footer
 
 
 .logo-center img
-  margin: 0 auto
-  margin-top: 20px
+  margin: 20px auto
+  margin-bottom: 30px
 
 .features-carousel
   color: $font-color
   padding-left: 0
-  margin: 30px 0 50px 0
+  margin: 0 0 50px 0
 
   li
     text-align: center
@@ -51,9 +67,17 @@ footer
     span.info
 
     span.header
-      line-height: 10px
+      line-height: 15px
       font-weight: 200
       font-size: 1.3em
+
+.informative-text
+  color: $font-color
+  text-align: center
+  line-height: 24px
+
+  strong
+    font-weight: 400
 
 .login-actions
   color: $font-color
