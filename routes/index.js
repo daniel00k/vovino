@@ -15,8 +15,7 @@ router.post("/parties", function(req, res) {
 
 router.put("/parties/:party_id", function(req, res) {
 	var partyId =  req.param("party_id");
-	playlist.addSong(redis, partyId, req.param("song_url"));
-	playlist.songs(redis, req.param("party_id"), req, res);
+	playlist.addSong(redis, partyId, req.param("song"), req, res);
 });
 
 router.get("/join/:party_id", function(req, res) {
