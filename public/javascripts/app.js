@@ -41,6 +41,8 @@ App.JoinController = Ember.Controller.extend({
   submitAction: function () {
     var playlistID = this.get('model').get('id');
 
-    socket.emit('connect', playlistID);
+    $.getJSON('/join/' + playlistID, function (data) {
+      debugger
+    });
   }
 });
