@@ -26,21 +26,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 
-// redis.subscribe("alert_created");
+redis.subscribe("song_added");
 
 io.on("connection", function(socket){
- console.log("connected socket")
- socket.on("disconnect", function(){
- console.log("client disconnected")
- socket.disconnect();
- });
+    console.log("connected socket");
+    socket.on("disconnect", function(){
+        console.log("client disconnected");
+        socket.disconnect();
+    });
 });
 
-// redis.on("message", function(channel, message){
-//     console.log(message);
-//     io.sockets.emit(channel, JSON.parse(message));
-//     console.log("channel "+ channel);
-// });
+redis.on("message", function(channel, message){
+    //el mensaje es la songUrl
+    console.log(message);
+    if (channel === 'song_added') {
+        io.sockets.emit(channel, message);
+        console.log("channel "+ channel);
+    };
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

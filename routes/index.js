@@ -16,12 +16,11 @@ router.post("/parties", function(req, res) {
 router.put("/parties/:party_id", function(req, res) {
 	var partyId =  req.param("party_id");
 	playlist.addSong(redis, partyId, req.param("song_url"));
-	var _songs   =  playlist.songs(redis, partyId);
-	res.json({party_id: partyId, songs: _songs});
+	playlist.songs(redis, req.param("party_id"), req, res);
 });
 
 router.get("/join/:party_id", function(req, res) {
-	console.log(req.param("party_id"));
+	playlist.songs(redis, req.param("party_id"), req, res);
 });
 
 module.exports = router;
