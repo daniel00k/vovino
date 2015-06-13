@@ -1,0 +1,90 @@
+$background: #252525
+$main-color: #00e676
+$secondary-color: lime
+$font-color: #fff
+$font-color-inverse: #252525
+
+body, html
+  background: #252525
+  font-size: 24px
+  font-weight: 100
+
+footer
+  .copyright
+    color: $font-color
+    margin-top: 40px
+    font-size: .75em
+    line-height: 10px
+    text-align: center
+
+form
+  input
+    display: block
+
+  input[type='text']
+    width: 100%
+    border-radius: 0
+    border: 0
+    padding: 10px 20px
+    text-transform: uppercase
+    text-align: center
+    margin-bottom: 10px
+    background: $font-color
+    color: $font-color-inverse
+
+    &:focus
+      outline: none
+
+.btn
+  border-radius: 0
+  padding: 10px 20px
+  font-size: 1.25em
+  font-weight: 100
+
+.btn-custom
+  text-transform: uppercase
+  color: $font-color
+  background: $main-color
+  width: 100%
+
+  &:hover
+    color: darken($font-color, 10%)
+
+
+.logo-center img
+  margin: 20px auto
+  margin-bottom: 30px
+
+.features-carousel
+  color: $font-color
+  padding-left: 0
+  margin: 0 0 50px 0
+
+  li
+    text-align: center
+    list-style: none
+
+    span.header, span.info
+      display: block
+
+    span.info
+
+    span.header
+      line-height: 15px
+      font-weight: 200
+      font-size: 1.3em
+
+.informative-text
+  color: $font-color
+  text-align: center
+  line-height: 24px
+
+  strong
+    font-weight: 400
+
+.login-actions
+  color: $font-color
+
+  p
+    text-align: center
+    margin-bottom: 4px
