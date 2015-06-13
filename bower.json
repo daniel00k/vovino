@@ -1,0 +1,26 @@
+{
+  "name": "vovino",
+  "version": "0.1.0",
+  "homepage": "https://github.com/daniel00k/vovino",
+  "authors": [
+    "Ricardo Andrés Bello <ricardoaandres@me.com>"
+  ],
+  "description": "collaborative office music player from osorno",
+  "main": "app.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "ember": "~1.13.0"
+  }
+}

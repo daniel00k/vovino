@@ -1,5 +1,46 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  script(type='text/x-handlebars' data-template-name='no-playlist')
+    .container-fluid
+      .row
+        .col-xs-12
+          .logo-center.login-logo
+            img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=150%C3%97150&w=150&h=150', class='img-responsive')
+
+      {{outlet}}
+
+      footer
+        .row
+          .col-xs-12
+            .copyright
+              p vovino, the office music player from
+              p Osorno, Chile
+
+  script(type='text/x-handlebars' data-template-name='with-playlist')
+    {{outlet}}
+
+  script(type='text/x-handlebars' data-template-name='index')
+    .row
+      .col-xs-12
+        ul.features-carousel
+          li
+            span.info listen to your favorite
+            span.header moooosic
+
+    .row
+      .col-xs-12
+        .login-actions
+          {{#link-to 'join' class='btn btn-custom' }}join{{/link-to}}
+          p an existing playlist or
+          a.btn.btn-custom create
+          p a new one
+
+  script(type='text/x-handlebars' data-template-name='join')
+    p.informative-text
+      strong hey, cool!
+      |  now type your playlist ID
+
+    form
+      input(type='text')
+      input(type='submit' class='btn btn-custom' value='join')

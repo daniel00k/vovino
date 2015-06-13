@@ -1,10 +1,23 @@
 doctype html
-html
+html(lang='en')
   head
+    meta(charset='utf-8')
     title= title
+    meta(http-equiv='x-ua-compatible', content='ie=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
+
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/interface.css')
+
+    block content
+  body
+    script(src='/jquery/dist/jquery.min.js')
     script(src='https://cdn.socket.io/socket.io-1.2.0.js')
-    script(src='http://code.jquery.com/jquery-1.11.1.js')
+    script(src='/ember/ember.min.js')
+    script(src='/ember/ember-template-compiler.js')
+    script(src='/javascripts/app.js')
+
     script.
       var socket = io("localhost:3001");
       $('form').submit(function(){
@@ -13,7 +26,5 @@ html
       return false;
       });
       socket.on('song_added', function(msg){
-      	console.log(msg);
+        console.log(msg);
       });
-  body
-    block content
