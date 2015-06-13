@@ -1,6 +1,10 @@
 exports.playlist = {
-    destroy: function(redisInstance){
-        
+    destroySong: function(redisInstance, partyId, songMetadata){
+        var that = this;
+        redisInstance.publish("song_deleted", songMetadata, function(err, reply){
+            that.songs();
+        });
+        redisInstance.lrem(partyId, 0, songMetadata);
     },
     addSong: function(redisInstance, partyId, songMetadata){
         redisInstance.publish("song_added", songMetadata);

@@ -28,6 +28,7 @@ app.use(express.static(__dirname + '/public/bower_components'));
 app.use('/', routes);
 
 redis.subscribe("song_added");
+redis.subscribe("song_deleted");
 
 io.on("connection", function(socket){
     console.log("connected socket");
@@ -41,6 +42,10 @@ redis.on("message", function(channel, message){
     //el mensaje es la songUrl
     console.log(message);
     if (channel === 'song_added') {
+        io.sockets.emit(channel, message);
+        console.log("channel "+ channel);
+    };
+    if (channel === 'song_deleted') {
         io.sockets.emit(channel, message);
         console.log("channel "+ channel);
     };

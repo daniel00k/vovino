@@ -15,8 +15,12 @@ router.post("/parties", function(req, res) {
 
 router.put("/parties/:party_id", function(req, res) {
 	var partyId =  req.param("party_id");
-	playlist.addSong(redis, partyId, JSON.stringify(req.param("song_url")));
+	playlist.addSong(redis, partyId, req.param("song"));
 	playlist.songs(redis, req.param("party_id"), req, res);
+});
+
+router.delete("/parties/:party_id", function(req, res) {
+	playlist.destroySong(redis, partyId, req. res);
 });
 
 router.get("/join/:party_id", function(req, res) {
