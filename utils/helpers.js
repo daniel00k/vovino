@@ -10,6 +10,6 @@ var generateUUID = function() {
 
 exports.tokenHelpers = {
 	generatePartyId: function(){
-		return generateUUID().split("-")[0];
+		return generateUUID().split("-")[0].toUpperCase();
 	}
 };

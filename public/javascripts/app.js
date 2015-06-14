@@ -115,3 +115,55 @@ addSong = function (element) {
     }
   });
 }
+
+loadYTAPI = function(){
+  // 2. This code loads the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+window.player;
+
+function onYouTubeIframeAPIReady() {
+  var partyId =  $(".code").text();
+  window.player = new YT.Player('player', {
+          height: '250',
+          width: '400',
+          playerVars: { 'autoplay': 1, controls: 1},
+          events: {
+            'onStateChange': onPlayerStateChange
+          }
+        });
+  setSocketListeners(partyId);
+  console.log("ready");
+}
+
+function onPlayerStateChange() {
+  if(player.getPlayerState() === 0) {
+    deleteSong();
+  }
+}
+
+function deleteSong(){
+  var partyId =  $(".code").text();
+  $.ajax({
+    url: "/parties/" + partyId,
+    type: "delete"
+  });
+}
+
+function setSocketListeners(partyId){
+  socket.on('song_deleted'+partyId, function(song){
+    console.log("cancion borrada...toca la siguiente usando player.loadVideoById(JSON.parse(song).id, 0, "large") ",song);
+  });
+  
+  socket.on('song_added'+partyId, function(song){
+    console.log("cancion aniadida, añadela a la cola", song);
+  });
+  
+  socket.on('first_song_added'+partyId, function(song){
+    player.loadVideoById(JSON.parse(song).id, 0, "large")
+  });
+}

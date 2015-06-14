@@ -8,7 +8,7 @@ var bodyParser   = require('body-parser');
 var routes       = require('./routes/index');
 
 var redis        = require("redis").createClient();
-var io           = require("socket.io").listen(process.env.PORT || 3001);
+// var io           = require("socket.io").listen(process.env.PORT || 3001);
 
 var app          = express();
 
@@ -27,29 +27,24 @@ app.use(express.static(__dirname + '/public/bower_components'));
 
 app.use('/', routes);
 
-redis.subscribe("song_added");
-redis.subscribe("song_deleted");
+// redis.subscribe("song_added");
+// redis.subscribe("song_deleted");
+// redis.subscribe("first_song_added");
 
-io.on("connection", function(socket){
-    console.log("connected socket");
-    socket.on("disconnect", function(){
-        console.log("client disconnected");
-        socket.disconnect();
-    });
-});
 
-redis.on("message", function(channel, message){
-    //el mensaje es la songUrl
-    console.log(message);
-    if (channel === 'song_added') {
-        io.sockets.emit(channel, message);
-        console.log("channel "+ channel);
-    };
-    if (channel === 'song_deleted') {
-        io.sockets.emit(channel, message);
-        console.log("channel "+ channel);
-    };
-});
+
+// redis.on("message", function(channel, message){
+//     //el mensaje es la songUrl
+//     console.log(message);
+//     if (channel === 'song_added') {
+//         io.sockets.emit(channel, message);
+//         console.log("channel "+ channel);
+//     };
+//     if (channel === 'song_deleted') {
+//         io.sockets.emit(channel, message);
+//         console.log("channel "+ channel);
+//     };
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

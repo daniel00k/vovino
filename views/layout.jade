@@ -22,11 +22,3 @@ html(lang='en')
 
     script.
       var socket = io("localhost:3001");
-      $('form').submit(function(){
-      socket.emit('chat message', "un mensaje");
-      console.log("asdas");
-      return false;
-      });
-      socket.on('song_added', function(msg){
-        console.log(msg);
-      });
