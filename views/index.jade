@@ -1,46 +1,94 @@
 extends layout
 
 block content
-  script(type='text/x-handlebars' data-template-name='no-playlist')
-    .container-fluid
+  main
+
+  script(type='text/x-handlebars' id='header')
+    .row
+      .col-xs-12
+        .logo-center.login-logo
+          img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=150%C3%97150&w=150&h=150', class='img-responsive')
+
+  script(type='text/x-handlebars' id='navigation-bar')
+    nav.navigation-bar
+      h1.title
+      small.subtitle playlist ID
+
+  script(type='text/x-handlebars' id='footer')
+    footer
       .row
         .col-xs-12
-          .logo-center.login-logo
-            img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=150%C3%97150&w=150&h=150', class='img-responsive')
+          .copyright
+            p vovino, the office music player from
+            p Osorno, Chile
 
-      {{outlet}}
+  script(type='text/x-handlebars' id='index')
+    .container-fluid
+      {{> 'header'}}
 
-      footer
-        .row
-          .col-xs-12
-            .copyright
-              p vovino, the office music player from
-              p Osorno, Chile
+      .row
+        .col-xs-12
+          ul.features-carousel
+            li
+              span.info listen to your favorite
+              span.header moooosic
 
-  script(type='text/x-handlebars' data-template-name='with-playlist')
-    {{outlet}}
+      .row
+        .col-xs-12
+          .login-actions
+            a(href='#' data-href='join' class='btn btn-custom') join
+            p an existing playlist or
+            a(href='#' data-href='create' class='btn btn-custom') create
+            p a new one
 
-  script(type='text/x-handlebars' data-template-name='index')
-    .row
-      .col-xs-12
-        ul.features-carousel
-          li
-            span.info listen to your favorite
-            span.header moooosic
+      {{> 'footer'}}
 
-    .row
-      .col-xs-12
-        .login-actions
-          {{#link-to 'join' class='btn btn-custom' }}join{{/link-to}}
-          p an existing playlist or
-          a.btn.btn-custom create
-          p a new one
+  script(type='text/x-handlebars' id='join')
+    .container-fluid
+      {{> 'header'}}
 
-  script(type='text/x-handlebars' data-template-name='join')
-    p.informative-text
-      strong hey, cool!
-      |  now type your playlist ID
+      p.informative-text
+        strong hey, cool!
+        |  now type your playlist ID
 
-    form
-      input(type='text')
-      input(type='submit' class='btn btn-custom' value='join')
+      form(name='join-playlist')
+        input(type='text' name='')
+        input(type='submit' class='btn btn-custom' value='join')
+
+      {{> 'footer'}}
+
+  script(type='text/x-handlebars' id='player')
+    h2 is it real life or is it just fantasy?
+
+  script(type='text/x-handlebars' id='search')
+    {{> 'navigation-bar'}}
+
+    .container-fluid
+      form(name='search' id='search-form')
+        input(type='search' name='search-input' id='search-input' placeholder='enter keywords')
+
+      ul#search-results
+
+    .modal.fade#new-playlist-modal(tabindex='-1' role='dialog' aria-labelledby='newPlaylistModalLabel' aria-hidden='true')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            p awesome!
+          .modal-body
+            p.informative-text your playlist ID is
+            .code
+            p.informative-text share it with your friends and let the party begin
+
+          .modal-footer
+            a(href='#' data-href='playlist' class='btn btn-custom') add songs
+
+  script(type='text/x-handlebars' id='search-results-list')
+    {{#each items}}
+    li.result
+      figure
+        <img src={{snippet.thumbnails.default.url}} data-id={{id.videoId}} >
+        figcaption
+          span.tit {{truncate snippet.title 30}}
+          span.chTitle {{snippet.channelTitle}}
+      a(href='javascript:;' class='btn btn-add' onClick="addSong(this)") +
+    {{/each}}
