@@ -57,6 +57,16 @@
       App.render('join');
     });
 
+    App.onClick('join-playlist', function (e) {
+      App.playlistID = e.target.parentNode.firstChild.value.toUpperCase();
+
+      App.render('search', function () {
+        var navBar = document.getElementsByClassName('navigation-bar')[0];
+
+        navBar.querySelector('.title').innerText = App.playlistID;
+      });
+    });
+
     App.onClick('create', function (e) {
       loadYTAPI();
 
@@ -120,6 +130,7 @@
 
       trackInfo = JSON.parse(listElement.dataset.track);
 
+      debugger
       xhr.open('PUT', '/parties/' + App.playlistID, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -153,7 +164,7 @@ var socket = io("localhost:3001");
 // });
 
 addSong = function (element) {
-  var partyId =  $(".code").text();
+  var partyId =  document.getElementsByClassName('navigation-bar')[0].querySelector('.title').innerText;
   var _parent =  $(element).parent();
   var str     =  JSON.stringify({"thumbnail": _parent.find("img").attr('src'), "title": _parent.find("span.tit").text(), "channelTitle": _parent.find("span.chTitle").text(), "id": _parent.find("img").data('id')});
   $.ajax({
