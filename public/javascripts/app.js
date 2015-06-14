@@ -30,6 +30,17 @@
       document.getElementsByTagName('main')[0].innerHTML = template(options);
 
       callback();
+    },
+
+    insertInto: function (source, dest, data, callback) {
+      var indexSource = document.getElementById(source).innerHTML,
+          template = Handlebars.compile(indexSource);
+
+      document.getElementById(dest).innerHTML = template(data);
+
+      if (callback) {
+        callback();
+      }
     }
   };
 
@@ -74,13 +85,12 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
 
       xhr.onload = function (response) {
-        var data = JSON.parse(response.target.response),
-            items = data.items;
+        var data = JSON.parse(response.target.response);
 
-        debugger
+        App.insertInto('search-results-list', 'search-results', data);
       };
 
-      // xhr.send();
+      xhr.send();
 
       e.preventDefault();
     });

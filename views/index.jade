@@ -67,26 +67,7 @@ block content
       form(name='search' id='search-form')
         input(type='search' name='search-input' id='search-input' placeholder='enter keywords')
 
-      ul.search-results
-        li.result
-          figure
-            img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=50%C3%9750&w=50&h=50')
-            figcaption
-              span ¡A TODA VELOCIDAD! - Trambóliko remix
-              span soytansutil
-          a(href='#' class='btn btn-add') +
-        li.result
-          figure
-            img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=50%C3%9750&w=50&h=50')
-            figcaption
-              span ¡A TODA VELOCIDAD! - Trambóliko remix
-              span soytansutil
-        li.result
-          figure
-            img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=50%C3%9750&w=50&h=50')
-            figcaption
-              span ¡A TODA VELOCIDAD! - Trambóliko remix
-              span soytansutil
+      ul#search-results
 
     .modal.fade#new-playlist-modal(tabindex='-1' role='dialog' aria-labelledby='newPlaylistModalLabel' aria-hidden='true')
       .modal-dialog
@@ -95,9 +76,19 @@ block content
             p awesome!
           .modal-body
             p.informative-text your playlist ID is
-            .code HSGTDU
+            .code
             p.informative-text share it with your friends and let the party begin
 
           .modal-footer
             a(href='#' data-href='playlist' class='btn btn-custom') add songs
 
+  script(type='text/x-handlebars' id='search-results-list')
+    {{#each items}}
+    li.result
+      figure
+        <img src={{snippet.thumbnails.default.url}}>
+        figcaption
+          span {{truncate snippet.title 30}}
+          span {{snippet.channelTitle}}
+      a(href='#' class='btn btn-add') +
+    {{/each}}
