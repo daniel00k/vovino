@@ -53,6 +53,16 @@ form
   &:hover
     color: darken($font-color, 10%)
 
+.btn.btn-add
+  float: right
+  border: 2px solid $main-color
+  color: $main-color
+  font-weight: 200
+  margin-top: 26px
+  padding: 10px
+  line-height: 14px
+  padding-bottom: 14px
+
 .modal
   .modal-content
     border-radius: 0
@@ -140,3 +150,27 @@ nav.navigation-bar
     text-align: center
     display: block
     font-size: .65em
+
+.search-results
+  background: #fff
+  padding: 0
+
+  .result
+    list-style: none
+    padding: 10px
+
+    figure
+      img
+        float: left
+        margin-right: 10px
+
+      figcaption
+        display: inline-block
+
+        span
+          display: block
+          margin-top: -2px
+          font-size: .85em
+
+    &:not(:last-child)
+      border-bottom: 1px solid $background

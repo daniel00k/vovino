@@ -8,6 +8,14 @@
       });
     },
 
+    onSubmit: function (dest, callback) {
+      document.addEventListener('submit', function (e) {
+        if (e.target.id === dest) {
+          callback(e);
+        }
+      });
+    },
+
     render: function (templateName, options, callback) {
       var indexSource = document.getElementById(templateName).innerHTML,
           template = Handlebars.compile(indexSource);
@@ -55,8 +63,32 @@
       });
     });
 
+    App.onSubmit('search-form', function (e) {
+      var xhr = new XMLHttpRequest(),
+          query = e.target.querySelector('#search-input').value,
+          key = 'AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY',
+          params = 'order=viewCount&part=snippet&q=' + query + '&maxResults=20&key=' + key;
+
+      xhr.open('GET', 'https://www.googleapis.com/youtube/v3/search?' + params, true);
+
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onload = function (response) {
+        var data = JSON.parse(response.target.response),
+            items = data.items;
+
+        debugger
+      };
+
+      // xhr.send();
+
+      e.preventDefault();
+    });
+
     // App.onClick('search', function (e) {
     //   App.render('search');
     // });
+
+  // $.get("https://www.googleapis.com/youtube/v3/search?order=viewCount&part=snippet&q=bruno mars&maxResults=20&key=AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY", function(data){console.log(data)})
   });
 }();
