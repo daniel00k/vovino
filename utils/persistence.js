@@ -2,9 +2,11 @@ exports.playlist = {
     destroySong: function(io, redisInstance, partyId, req, res){
         var that = this;
         redisInstance.lpop(partyId, function(err, reply) {
-            io.sockets.emit("song_deleted"+partyId, partyId);
-            that.songs(redisInstance, partyId, req, res);
-            console.log(err, reply);
+            redisInstance.lrange(partyId, 0, 0, function (err, reply) {
+                io.sockets.emit("song_deleted"+partyId, reply);
+                that.songs(redisInstance, partyId, req, res);
+                console.log(err, reply);
+            });
         });
         // Si devuelve el del otro extremo, ya sea tail o head, entonces probar con
         // redisInstance.lpop(partyId);
@@ -21,7 +23,7 @@ exports.playlist = {
                 io.sockets.emit("first_song_added"+partyId, songMetadata);
             }
         });
-        
+
         redisInstance.rpush([partyId, songMetadata], function(err, reply) {
             that.songs(redisInstance, partyId, req, res);
         });
@@ -30,6 +32,13 @@ exports.playlist = {
         redisInstance.lrange(partyId, 0, -1, function(err, reply) {
             console.log("canciones.....", reply);
             res.json({party_id: req.param("party_id"), songs: reply});
+        });
+    },
+
+    listSongs: function (redisInstance, partyId) {
+        redisInstance.lrange(partyId, 0, -1, function(err, reply) {
+            console.log('REPLY', reply);
+            return reply;
         });
     }
 };

@@ -58,6 +58,8 @@
     });
 
     App.onClick('create', function (e) {
+      loadYTAPI();
+
       App.render('search', function () {
         var xhr = new XMLHttpRequest();
 
@@ -124,36 +126,36 @@
       xhr.onload = function (response) {
         var data = response.target.response;
 
-        debugger
-        // localStorage.setItem(App.playlistID, data.songs);
+        localStorage.setItem(App.playlistID, data.songs);
       };
 
       xhr.send(JSON.stringify({song: {
         title: trackInfo.title,
         channelTitle: trackInfo.channelTitle,
-        thumbnail: trackInfo.thumbnail
+        thumbnail: trackInfo.thumbnail,
+        id: trackInfo.id
       }}));
 
       e.preventDefault();
     });
-
-    var socket = io("localhost:3001");
-    // $('form').submit(function(){
-    // socket.emit('chat message', "un mensaje");
-    // console.log("asdas");
-    // return false;
-    // });
-    socket.on('song_added', function(msg){
-      debugger
-      console.log(msg);
-    });
   });
 }();
+
+var socket = io("localhost:3001");
+// $('form').submit(function(){
+// socket.emit('chat message', "un mensaje");
+// console.log("asdas");
+// return false;
+// });
+// socket.on('song_added', function(msg){
+//   debugger
+//   console.log(msg);
+// });
 
 addSong = function (element) {
   var partyId =  $(".code").text();
   var _parent =  $(element).parent();
-  var str     =  JSON.stringify({"thumb": _parent.find("img").attr('src'), "title": _parent.find("span.tit").text(), "channelTitle": _parent.find("span.chTitle").text(), "id": _parent.find("img").data('id')});
+  var str     =  JSON.stringify({"thumbnail": _parent.find("img").attr('src'), "title": _parent.find("span.tit").text(), "channelTitle": _parent.find("span.chTitle").text(), "id": _parent.find("img").data('id')});
   $.ajax({
     url: "/parties/" + partyId,
     type: "put",
@@ -177,7 +179,7 @@ function onYouTubeIframeAPIReady() {
   var partyId =  $(".code").text();
   window.player = new YT.Player('player', {
           height: '250',
-          width: '400',
+          width: '100%',
           playerVars: { 'autoplay': 1, controls: 1},
           events: {
             'onStateChange': onPlayerStateChange
@@ -203,13 +205,14 @@ function deleteSong(){
 
 function setSocketListeners(partyId){
   socket.on('song_deleted'+partyId, function(song){
-    console.log("cancion borrada...toca la siguiente usando player.loadVideoById(JSON.parse(song).id, 0, "large") ",song);
+    console.log('cancion borrada...toca la siguiente usando player.loadVideoById(JSON.parse(song).id, 0, "large") ',song);
+    player.loadVideoById(JSON.parse(song).id, 0, "large")
   });
-  
+
   socket.on('song_added'+partyId, function(song){
     console.log("cancion aniadida, añadela a la cola", song);
   });
-  
+
   socket.on('first_song_added'+partyId, function(song){
     player.loadVideoById(JSON.parse(song).id, 0, "large")
   });
