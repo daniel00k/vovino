@@ -65,7 +65,7 @@
 
           modal.querySelector('.code').innerText = playlistID;
 
-          // $(modal).modal('show');
+          $(modal).modal('show');
           navBar.querySelector('.title').innerText = playlistID;
         };
 
