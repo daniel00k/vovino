@@ -2,11 +2,13 @@ exports.playlist = {
     destroy: function(redisInstance){
         
     },
-    addSong: function(redisInstance, partyId, songUrl){
+    addSong: function(redisInstance, partyId, songUrl, req, res){
+        var that = this;
+
         redisInstance.publish("song_added", songUrl);
         redisInstance.rpush([partyId, songUrl], function(err, reply) {
             console.log(reply);
-            return reply;
+            that.songs(redisInstance, partyId, req, res);
         });
     },
     songs: function(redisInstance, partyId, req, res){
