@@ -9,6 +9,11 @@ block content
         .logo-center.login-logo
           img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=150%C3%97150&w=150&h=150', class='img-responsive')
 
+  script(type='text/x-handlebars' id='navigation-bar')
+    nav.navigation-bar
+      h1.title
+      small.subtitle playlist ID
+
   script(type='text/x-handlebars' id='footer')
     footer
       .row
@@ -52,28 +57,26 @@ block content
 
       {{> 'footer'}}
 
-  script(type='text/x-handlebars' id='create')
-    .container-fluid
-      {{> 'header'}}
-
-      .modal.fade#new-playlist-modal(tabindex='-1' role='dialog' aria-labelledby='newPlaylistModalLabel' aria-hidden='true')
-        .modal-dialog
-          .modal-content
-            .modal-header
-              p awesome!
-            .modal-body
-              p.informative-text your playlist ID is
-              .code HSGTDU
-              p.informative-text share it with your friends and let the party begin
-
-            .modal-footer
-              a(href='#' data-href='playlist' class='btn btn-custom') add songs
-
-      {{> 'footer'}}
-
-  script(type='text/x-handlebars' id='playlist')
+  script(type='text/x-handlebars' id='player')
     h2 is it real life or is it just fantasy?
 
   script(type='text/x-handlebars' id='search')
-    h2 time to search
+    {{> 'navigation-bar'}}
+
+    .container-fluid
+      form(name='search' id='search-form')
+        input(type='search' placeholder='enter keywords')
+
+    .modal.fade#new-playlist-modal(tabindex='-1' role='dialog' aria-labelledby='newPlaylistModalLabel' aria-hidden='true')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            p awesome!
+          .modal-body
+            p.informative-text your playlist ID is
+            .code HSGTDU
+            p.informative-text share it with your friends and let the party begin
+
+          .modal-footer
+            a(href='#' data-href='playlist' class='btn btn-custom') add songs
 

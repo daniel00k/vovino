@@ -33,22 +33,30 @@
     });
 
     App.onClick('create', function (e) {
-      App.render('create', function () {
+      App.render('search', function () {
         var xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/parties', true);
 
         xhr.onload = function (response) {
           var data = JSON.parse(response.target.response),
-              modal = document.getElementById('new-playlist-modal');
+              playlistID = data.party_id.toUpperCase(),
+              modal = document.getElementById('new-playlist-modal'),
+              navBar = document.getElementsByClassName('navigation-bar')[0];
 
-          modal.querySelector('.code').innerText = data.party_id.toUpperCase();
+          modal.querySelector('.code').innerText = playlistID;
 
-          $(modal).modal('show');
+          // $(modal).modal('show');
+          navBar.querySelector('.title').innerText = playlistID;
         };
 
         xhr.send();
+
       });
     });
+
+    // App.onClick('search', function (e) {
+    //   App.render('search');
+    // });
   });
 }();
