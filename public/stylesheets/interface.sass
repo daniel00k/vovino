@@ -21,6 +21,9 @@ form
   input
     display: block
 
+    &:focus
+      outline: none
+
   input[type='text']
     width: 100%
     border-radius: 0
@@ -29,11 +32,11 @@ form
     text-transform: uppercase
     text-align: center
     margin-bottom: 10px
-    background: $font-color
-    color: $font-color-inverse
+    border: 2px solid $font-color
+    background: $background
+    color: $font-color
+    font-weight: 200
 
-  &:focus
-    outline: none
 
 .btn
   border-radius: 0
@@ -50,6 +53,36 @@ form
   &:hover
     color: darken($font-color, 10%)
 
+.modal
+  .modal-content
+    border-radius: 0
+    background: #fff
+
+    .modal-body
+      color: $font-color-inverse
+      padding-top: 0
+
+    .modal-footer, .modal-header
+      border: 0
+
+    .modal-header
+      p
+        font-size: 1.5em
+        font-weight: 200
+        text-align: center
+
+  .informative-text
+    color: $font-color-inverse
+
+.code
+  border: 2px solid $background
+  width: 50%
+  padding: 10px
+  color: $font-color-inverse
+  text-align: center
+  margin: 0 auto
+  margin-bottom: 10px
+  font-weight: 200
 
 .logo-center img
   margin: 20px auto
@@ -88,3 +121,15 @@ form
   p
     text-align: center
     margin-bottom: 4px
+
+header.top-bar
+  background: $main-color
+  color: $font-color
+  padding: 5px
+  height: 66px
+
+  h1.title
+    font-weight: 100
+    margin: 0
+    line-height: 56px
+    text-align: center
