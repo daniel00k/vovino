@@ -85,11 +85,12 @@ block content
 
   script(type='text/x-handlebars' id='search-results-list')
     {{#each items}}
-    li.result
+    <li class='result' data-track='{"title":"{{snippet.title}}", "channelTitle":"{{snippet.channelTitle}}", "thumbnail":"{{snippet.thumbnails.default.url}}"}'>
       figure
         <img src={{snippet.thumbnails.default.url}} data-id={{id.videoId}} >
         figcaption
           span.tit {{truncate snippet.title 30}}
           span.chTitle {{snippet.channelTitle}}
       a(href='javascript:;' class='btn btn-add' onClick="addSong(this)") +
+    </li>
     {{/each}}

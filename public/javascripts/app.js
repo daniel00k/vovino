@@ -2,9 +2,15 @@
   'use strict';
 
   var App = {
+    playlistID: '',
+
     onClick: function (dest, callback) {
-      document.querySelector('[data-href="' + dest + '"]').addEventListener('click', function (e) {
-        callback(e);
+      document.addEventListener('click', function (e) {
+        var elem = document.querySelector('[data-href="' + dest + '"]');
+
+        if (elem && elem.dataset.href === e.target.dataset.href) {
+          callback(e);
+        }
       });
     },
 
@@ -59,14 +65,16 @@
 
         xhr.onload = function (response) {
           var data = JSON.parse(response.target.response),
-              playlistID = data.party_id.toUpperCase(),
               modal = document.getElementById('new-playlist-modal'),
               navBar = document.getElementsByClassName('navigation-bar')[0];
 
-          modal.querySelector('.code').innerText = playlistID;
+          App.playlistID = data.party_id.toUpperCase();
+          modal.querySelector('.code').innerText = App.playlistID;
+
+          localStorage.setItem(App.playlistID, []);
 
           $(modal).modal('show');
-          navBar.querySelector('.title').innerText = playlistID;
+          navBar.querySelector('.title').innerText = App.playlistID;
         };
 
         xhr.send();
@@ -99,7 +107,46 @@
     //   App.render('search');
     // });
 
-  // $.get("https://www.googleapis.com/youtube/v3/search?order=viewCount&part=snippet&q=bruno mars&maxResults=20&key=AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY", function(data){console.log(data)})
+    App.onClick('add-song', function (e) {
+      var xhr = new XMLHttpRequest(),
+          listElement = e.target.parentNode,
+          trackInfo;
+
+      while (Array.prototype.indexOf.call(listElement.classList, 'result') < 0) {
+        listElement = listElement.parentNode;
+      }
+
+      trackInfo = JSON.parse(listElement.dataset.track);
+
+      xhr.open('PUT', '/parties/' + App.playlistID, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onload = function (response) {
+        var data = response.target.response;
+
+        debugger
+        // localStorage.setItem(App.playlistID, data.songs);
+      };
+
+      xhr.send(JSON.stringify({song: {
+        title: trackInfo.title,
+        channelTitle: trackInfo.channelTitle,
+        thumbnail: trackInfo.thumbnail
+      }}));
+
+      e.preventDefault();
+    });
+
+    var socket = io("localhost:3001");
+    // $('form').submit(function(){
+    // socket.emit('chat message', "un mensaje");
+    // console.log("asdas");
+    // return false;
+    // });
+    socket.on('song_added', function(msg){
+      debugger
+      console.log(msg);
+    });
   });
 }();
 
