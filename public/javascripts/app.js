@@ -65,6 +65,8 @@
 
         navBar.querySelector('.title').innerText = App.playlistID;
       });
+
+      e.preventDefault();
     });
 
     App.onClick('create', function (e) {
