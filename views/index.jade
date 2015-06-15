@@ -7,7 +7,7 @@ block content
     .row
       .col-xs-12
         .logo-center.login-logo
-          img(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=150%C3%97150&w=150&h=150', class='img-responsive')
+          img(src='/images/vovino.png', class='img-responsive')
 
   script(type='text/x-handlebars' id='navigation-bar')
     nav.navigation-bar
@@ -53,7 +53,7 @@ block content
 
       form(name='join-playlist')
         input(type='text' name='')
-        input(type='submit' class='btn btn-custom' value='join')
+        input(type='submit' class='btn btn-custom' value='join' data-href='join-playlist')
 
       {{> 'footer'}}
 
@@ -81,15 +81,16 @@ block content
             p.informative-text share it with your friends and let the party begin
 
           .modal-footer
-            a(href='#' data-href='playlist' class='btn btn-custom') add songs
+            a(href='#' data-href='playlist' class='btn btn-custom' data-dismiss='modal') add songs
 
   script(type='text/x-handlebars' id='search-results-list')
     {{#each items}}
-    li.result
-      figure
-        <img src={{snippet.thumbnails.default.url}} data-id={{id.videoId}} >
-        figcaption
-          span.tit {{truncate snippet.title 30}}
-          span.chTitle {{snippet.channelTitle}}
-      a(href='javascript:;' class='btn btn-add' onClick="addSong(this)") +
+    <li class='result' data-track='{"title":"{{snippet.title}}", "channelTitle":"{{snippet.channelTitle}}", "thumbnail":"{{snippet.thumbnails.default.url}}", "id":"{{json id}}"}'>
+    figure
+      <img src={{snippet.thumbnails.default.url}} data-id={{id.videoId}} >
+      figcaption
+        span.tit {{truncate snippet.title 30}}
+        span.chTitle {{snippet.channelTitle}}
+    a(href='javascript:;' class='btn btn-add' onClick="addSong(this)") +
+    </li>
     {{/each}}

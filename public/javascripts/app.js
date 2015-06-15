@@ -2,9 +2,15 @@
   'use strict';
 
   var App = {
+    playlistID: '',
+
     onClick: function (dest, callback) {
-      document.querySelector('[data-href="' + dest + '"]').addEventListener('click', function (e) {
-        callback(e);
+      document.addEventListener('click', function (e) {
+        var elem = document.querySelector('[data-href="' + dest + '"]');
+
+        if (elem && elem.dataset.href === e.target.dataset.href) {
+          callback(e);
+        }
       });
     },
 
@@ -51,7 +57,21 @@
       App.render('join');
     });
 
+    App.onClick('join-playlist', function (e) {
+      App.playlistID = e.target.parentNode.firstChild.value.toUpperCase();
+
+      App.render('search', function () {
+        var navBar = document.getElementsByClassName('navigation-bar')[0];
+
+        navBar.querySelector('.title').innerText = App.playlistID;
+      });
+
+      e.preventDefault();
+    });
+
     App.onClick('create', function (e) {
+      loadYTAPI();
+
       App.render('search', function () {
         var xhr = new XMLHttpRequest();
 
@@ -59,14 +79,16 @@
 
         xhr.onload = function (response) {
           var data = JSON.parse(response.target.response),
-              playlistID = data.party_id.toUpperCase(),
               modal = document.getElementById('new-playlist-modal'),
               navBar = document.getElementsByClassName('navigation-bar')[0];
 
-          modal.querySelector('.code').innerText = playlistID;
+          App.playlistID = data.party_id.toUpperCase();
+          modal.querySelector('.code').innerText = App.playlistID;
 
-          // $(modal).modal('show');
-          navBar.querySelector('.title').innerText = playlistID;
+          localStorage.setItem(App.playlistID, []);
+
+          $(modal).modal('show');
+          navBar.querySelector('.title').innerText = App.playlistID;
         };
 
         xhr.send();
@@ -99,14 +121,54 @@
     //   App.render('search');
     // });
 
-  // $.get("https://www.googleapis.com/youtube/v3/search?order=viewCount&part=snippet&q=bruno mars&maxResults=20&key=AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY", function(data){console.log(data)})
+    App.onClick('add-song', function (e) {
+      var xhr = new XMLHttpRequest(),
+          listElement = e.target.parentNode,
+          trackInfo;
+
+      while (Array.prototype.indexOf.call(listElement.classList, 'result') < 0) {
+        listElement = listElement.parentNode;
+      }
+
+      trackInfo = JSON.parse(listElement.dataset.track);
+
+      debugger
+      xhr.open('PUT', '/parties/' + App.playlistID, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onload = function (response) {
+        var data = response.target.response;
+
+        localStorage.setItem(App.playlistID, data.songs);
+      };
+
+      xhr.send(JSON.stringify({song: {
+        title: trackInfo.title,
+        channelTitle: trackInfo.channelTitle,
+        thumbnail: trackInfo.thumbnail,
+        id: trackInfo.id
+      }}));
+
+      e.preventDefault();
+    });
   });
 }();
 
+var socket = io("localhost:3001");
+// $('form').submit(function(){
+// socket.emit('chat message', "un mensaje");
+// console.log("asdas");
+// return false;
+// });
+// socket.on('song_added', function(msg){
+//   debugger
+//   console.log(msg);
+// });
+
 addSong = function (element) {
-  var partyId =  $(".code").text();
+  var partyId =  document.getElementsByClassName('navigation-bar')[0].querySelector('.title').innerText;
   var _parent =  $(element).parent();
-  var str     =  JSON.stringify({"thumb": _parent.find("img").attr('src'), "title": _parent.find("span.tit").text(), "channelTitle": _parent.find("span.chTitle").text(), "id": _parent.find("img").data('id')});
+  var str     =  JSON.stringify({"thumbnail": _parent.find("img").attr('src'), "title": _parent.find("span.tit").text(), "channelTitle": _parent.find("span.chTitle").text(), "id": _parent.find("img").data('id')});
   $.ajax({
     url: "/parties/" + partyId,
     type: "put",
@@ -130,7 +192,7 @@ function onYouTubeIframeAPIReady() {
   var partyId =  $(".code").text();
   window.player = new YT.Player('player', {
           height: '250',
-          width: '400',
+          width: '100%',
           playerVars: { 'autoplay': 1, controls: 1},
           events: {
             'onStateChange': onPlayerStateChange
@@ -156,13 +218,14 @@ function deleteSong(){
 
 function setSocketListeners(partyId){
   socket.on('song_deleted'+partyId, function(song){
-    console.log("cancion borrada...toca la siguiente usando player.loadVideoById(JSON.parse(song).id, 0, "large") ",song);
+    console.log('cancion borrada...toca la siguiente usando player.loadVideoById(JSON.parse(song).id, 0, "large") ',song);
+    player.loadVideoById(JSON.parse(song).id, 0, "large")
   });
-  
+
   socket.on('song_added'+partyId, function(song){
     console.log("cancion aniadida, añadela a la cola", song);
   });
-  
+
   socket.on('first_song_added'+partyId, function(song){
     player.loadVideoById(JSON.parse(song).id, 0, "large")
   });
