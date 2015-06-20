@@ -24,13 +24,13 @@
 
     render: function (templateName, options, callback) {
       var indexSource = document.getElementById(templateName).innerHTML,
-          template = Handlebars.compile(indexSource);
+          template    = Handlebars.compile(indexSource);
 
       callback = function () {};
 
       if (typeof options === 'function') {
         callback = options;
-        options = {};
+        options  = {};
       }
 
       document.getElementsByTagName('main')[0].innerHTML = template(options);
@@ -40,7 +40,7 @@
 
     insertInto: function (source, dest, data, callback) {
       var indexSource = document.getElementById(source).innerHTML,
-          template = Handlebars.compile(indexSource);
+          template    = Handlebars.compile(indexSource);
 
       document.getElementById(dest).innerHTML = template(data);
 
@@ -78,9 +78,9 @@
         xhr.open('POST', '/parties', true);
 
         xhr.onload = function (response) {
-          var data = JSON.parse(response.target.response),
-              modal = document.getElementById('new-playlist-modal'),
-              navBar = document.getElementsByClassName('navigation-bar')[0];
+          var data    =  JSON.parse(response.target.response),
+              modal   =  document.getElementById('new-playlist-modal'),
+              navBar  =  document.getElementsByClassName('navigation-bar')[0];
 
           App.playlistID = data.party_id.toUpperCase();
           modal.querySelector('.code').innerText = App.playlistID;
@@ -97,9 +97,9 @@
     });
 
     App.onSubmit('search-form', function (e) {
-      var xhr = new XMLHttpRequest(),
-          query = e.target.querySelector('#search-input').value,
-          key = 'AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY',
+      var xhr    = new XMLHttpRequest(),
+          query  = e.target.querySelector('#search-input').value,
+          key    = 'AIzaSyBVOo94mZqD7gLS5s2KS6dmS2p3dw5HehY',
           params = 'order=viewCount&part=snippet&q=' + query + '&maxResults=20&key=' + key;
 
       xhr.open('GET', 'https://www.googleapis.com/youtube/v3/search?' + params, true);
@@ -122,7 +122,7 @@
     // });
 
     App.onClick('add-song', function (e) {
-      var xhr = new XMLHttpRequest(),
+      var xhr         = new XMLHttpRequest(),
           listElement = e.target.parentNode,
           trackInfo;
 
@@ -132,7 +132,6 @@
 
       trackInfo = JSON.parse(listElement.dataset.track);
 
-      debugger
       xhr.open('PUT', '/parties/' + App.playlistID, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -143,10 +142,10 @@
       };
 
       xhr.send(JSON.stringify({song: {
-        title: trackInfo.title,
+        title:        trackInfo.title,
         channelTitle: trackInfo.channelTitle,
-        thumbnail: trackInfo.thumbnail,
-        id: trackInfo.id
+        thumbnail:    trackInfo.thumbnail,
+        id:           trackInfo.id
       }}));
 
       e.preventDefault();
@@ -154,7 +153,8 @@
   });
 }();
 
-var socket = io("localhost:3001");
+var socket = io("localhost:"+$("body").data("host"));
+console.log("localhost:"+$("body").data("host"));
 // $('form').submit(function(){
 // socket.emit('chat message', "un mensaje");
 // console.log("asdas");
@@ -180,16 +180,16 @@ addSong = function (element) {
 
 loadYTAPI = function(){
   // 2. This code loads the IFrame Player API code asynchronously.
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
+  var tag             =  document.createElement('script');
+  tag.src             =  "https://www.youtube.com/iframe_api";
+  var firstScriptTag  =  document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
 window.player;
 
 function onYouTubeIframeAPIReady() {
-  var partyId =  $(".code").text();
+  var partyId   =  $(".code").text();
   window.player = new YT.Player('player', {
           height: '250',
           width: '100%',
@@ -209,7 +209,7 @@ function onPlayerStateChange() {
 }
 
 function deleteSong(){
-  var partyId =  $(".code").text();
+  var partyId  =  $(".code").text();
   $.ajax({
     url: "/parties/" + partyId,
     type: "delete"

@@ -8,7 +8,6 @@ var bodyParser   = require('body-parser');
 var routes       = require('./routes/index');
 
 var redis        = require("redis").createClient();
-// var io           = require("socket.io").listen(process.env.PORT || 3001);
 
 var app          = express();
 

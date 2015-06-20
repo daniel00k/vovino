@@ -85,6 +85,7 @@ block content
 
   script(type='text/x-handlebars' id='search-results-list')
     {{#each items}}
+    {{#if id.videoId}}
     <li class='result' data-track='{"title":"{{snippet.title}}", "channelTitle":"{{snippet.channelTitle}}", "thumbnail":"{{snippet.thumbnails.default.url}}", "id":"{{json id}}"}'>
     figure
       <img src={{snippet.thumbnails.default.url}} data-id={{id.videoId}} >
@@ -93,4 +94,5 @@ block content
         span.chTitle {{snippet.channelTitle}}
     a(href='javascript:;' class='btn btn-add' onClick="addSong(this)") +
     </li>
+    {{/if}}
     {{/each}}

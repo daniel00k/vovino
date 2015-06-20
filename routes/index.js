@@ -15,7 +15,7 @@ io.on("connection", function(socket){
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Bovino', host: (process.env.PORT || 3001) });
 });
 
 router.post("/parties", function(req, res) {
