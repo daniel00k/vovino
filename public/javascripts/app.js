@@ -153,8 +153,9 @@
   });
 }();
 
-var socket = io("localhost:"+$("body").data("host"));
-console.log("localhost:"+$("body").data("host"));
+var _host  = location.host.split(":")[0]
+var socket = io(_host+":"+$("body").data("host"));
+console.log(_host+":"+$("body").data("host"));
 // $('form').submit(function(){
 // socket.emit('chat message', "un mensaje");
 // console.log("asdas");
